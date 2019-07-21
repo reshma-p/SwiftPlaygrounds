@@ -42,9 +42,6 @@ XCTestObservationCenter.shared.addTestObserver(testObserver)
  MMXIV
  */
 
-t
-
-
 
 enum RomanSymbol:String{
     case I // 1
@@ -56,9 +53,7 @@ enum RomanSymbol:String{
     case M //  1000
     case empty = ""
     
-//    enum SymbolRange{
-//        case
-//    }
+
     
     static func convertToRoman(value: Int) -> RomanSymbol{
         
@@ -103,38 +98,32 @@ enum RomanSymbol:String{
     }
 }
 
-
-
 func addIncreasingSymbols(number: Int, lowerBound: Int, upperBound: Int, multiplier: Int) -> String{
     
     var symbols :[String] = []
-    
-    
-    var symbolVal = lowerBound
-    print("lowerBound : \(lowerBound) upperBound : \(upperBound) multiplier : \(multiplier) ")
     //-- making 1 less
     if(upperBound-number == 1*multiplier){
-        print("Number : \(number)")
-        symbolVal = upperBound
-        symbols.append(RomanSymbol.convertToRoman(value: upperBound).rawValue)
-        symbols.append(RomanSymbol.convertToRoman(value: multiplier).rawValue)
-        
+        symbols = addSymbols(symbolVal: upperBound, multiplier: multiplier, incrementBy: number, whileLimit: upperBound)
         symbols.reverse()
     }else{
-        //-- Adding the symbol for the Range
-        symbols.append(RomanSymbol.convertToRoman(value: lowerBound).rawValue)
-        
-        var incrementVal = symbolVal
-        
-        //-- Add the lowerbound symbol * different
-        while incrementVal < number{
-            symbols.append(RomanSymbol.convertToRoman(value: multiplier).rawValue)
-            incrementVal += multiplier
-        }
+        symbols = addSymbols(symbolVal: lowerBound, multiplier: multiplier, incrementBy: lowerBound, whileLimit: number)
     }
     return symbols.joined()
 }
 
+func addSymbols(symbolVal: Int, multiplier: Int,incrementBy: Int, whileLimit: Int) -> [String]{
+    var symbols : [String] = []
+    symbols.append(RomanSymbol.convertToRoman(value: symbolVal).rawValue)
+    var incrementBy = incrementBy
+    
+    //-- Add the lowerbound symbol * different
+    while incrementBy < whileLimit{
+        symbols.append(RomanSymbol.convertToRoman(value: multiplier).rawValue)
+        incrementBy += multiplier
+    }
+    
+   return symbols
+}
 
 func convertToRomanNumeral(number: Int) -> String{
     
