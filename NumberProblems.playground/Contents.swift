@@ -74,5 +74,119 @@ class DontGiveMeFiveTest: XCTestCase{
     }
 }
 
-DontGiveMeFiveTest.defaultTestSuite.run()
+
+/*
+ 
+ Divisors of 42 are : 1, 2, 3, 6, 7, 14, 21, 42. These divisors squared are: 1, 4, 9, 36, 49, 196, 441, 1764. The sum of the squared divisors is 2500 which is 50 * 50, a square!
+ 
+ Given two integers m, n (1 <= m <= n) we want to find all integers between m and n whose sum of squared divisors is itself a square. 42 is such a number.
+ 
+ The result will be an array of arrays or of tuples (in C an array of Pair) or a string, each subarray having two elements, first the number whose squared divisors is a square and then the sum of the squared divisors.
+ 
+ #Examples:
+ 
+ list_squared(1, 250) --> [[1, 1], [42, 2500], [246, 84100]]
+ list_squared(42, 250) --> [[42, 2500], [246, 84100]]
+ The form of the examples may change according to the language, see Example Tests: for more details.
+ 
+ Note
+ 
+ In Fortran - as in any other language - the returned string is not permitted to contain any redundant trailing whitespace: you can use dynamically allocated character strings.
+ 
+ */
+
+
+func listSquared(_ m: Int, _ n: Int) -> [(Int,Int)] {
+
+    var squaredList : [(Int,Int)] = []
+    if(m <= n){
+        for value in m...n{
+            //--- get divisors for "value"
+            let sum = getDivsors(value).reduce(0) { x, y in
+                x + (y*y)
+            }
+            if(checkSquare(sum)){
+                squaredList.append((value,sum))
+            }
+        }
+    }
+    return squaredList
+}
+
+func checkSquare(_ square: Int) -> Bool{
+    let squareRoot = sqrt(Double(square))
+    
+    if(squareRoot - floor(squareRoot) == 0){
+        return true
+    }
+    return false
+}
+
+//-- Gets the list of divisors for given number
+func getDivsors(_ number: Int) -> [Int]{
+    var divisors : [Int] = []
+    for value in 1...number{
+        if number % value == 0{
+            divisors.append(value)
+        }
+    }
+    return divisors
+}
+
+
+class CheckSquareRootTest: XCTestCase{
+    
+    func testPerfectSquare() {
+        XCTAssertEqual(checkSquare(144),true,"Expected perfect square")
+    }
+    
+    func testNotPerfectSquare(){
+        XCTAssertEqual(checkSquare(141),false,"Expected no square")
+    }
+    
+}
+
+class GetDivisorTest: XCTestCase{
+    
+    func testDivisorPrimes() {
+        XCTAssertEqual(getDivsors(1),[1],"Not matching ")
+        XCTAssertEqual(getDivsors(3),[1,3],"Not matching ")
+    }
+    
+    func testDivisorsNonPrime(){
+        XCTAssertEqual(getDivsors(42),[1, 2, 3, 6, 7, 14, 21, 42],"Not matching ")
+        XCTAssertEqual(getDivsors(50),[1, 2, 5, 10, 25, 50],"Not matching ")
+    }
+    
+}
+class ListSquareTest: XCTestCase{
+    
+    func testing(_ m: Int, _ n: Int, _ expected: [(Int, Int)]) {
+        let ans  = listSquared(m, n)
+        if ans.count == expected.count {
+            for i in 0..<expected.count {
+                XCTAssertTrue(ans[i] == expected[i], "Actual and Expected don't have same value at index \(i) -> expected \(expected[i])")
+            }
+        }
+        else {XCTAssertEqual(ans.count, expected.count, "Actual and Expected don't have same length")}
+    }
+    
+    func testExample() {
+        testing(1, 250, [(1, 1), (42, 2500), (246, 84100)])
+        testing(42, 250, [(42, 2500), (246, 84100)])
+        testing(250, 500, [(287, 84100)])
+        testing(300, 600, [])
+    }
+    
+}
+
+
+
+
+//--- TEST runs
+
+//DontGiveMeFiveTest.defaultTestSuite.run()
+GetDivisorTest.defaultTestSuite.run()
+CheckSquareRootTest.defaultTestSuite.run()
+ListSquareTest.defaultTestSuite.run()
 
