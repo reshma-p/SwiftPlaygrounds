@@ -75,7 +75,7 @@ class DontGiveMeFiveTest: XCTestCase{
 }
 
 
-/*
+/* Problem 2
  
  Divisors of 42 are : 1, 2, 3, 6, 7, 14, 21, 42. These divisors squared are: 1, 4, 9, 36, 49, 196, 441, 1764. The sum of the squared divisors is 2500 which is 50 * 50, a square!
  
@@ -105,7 +105,13 @@ func listSquared(_ m: Int, _ n: Int) -> [(Int,Int)] {
             let sum = getDivsors(value).reduce(0) { x, y in
                 x + (y*y)
             }
+            if(value == 1){
+              print("SUM : \(sum)")
+            }
             if(checkSquare(sum)){
+                if(value == 1){
+                    print("SUM : \(sum)")
+                }
                 squaredList.append((value,sum))
             }
         }
@@ -124,13 +130,19 @@ func checkSquare(_ square: Int) -> Bool{
 
 //-- Gets the list of divisors for given number
 func getDivsors(_ number: Int) -> [Int]{
-    var divisors : [Int] = []
-    for value in 1...number{
-        if number % value == 0{
-            divisors.append(value)
+    var divisors : [Int] = [number]
+    
+    if(number == 1 ){
+        return [1]
+    }else{
+        for value in 1...number/2{
+            if number % value == 0{
+                divisors.append(value)
+            }
         }
     }
-    return divisors
+    
+    return divisors.sorted(by: <)
 }
 
 
@@ -154,6 +166,9 @@ class GetDivisorTest: XCTestCase{
     }
     
     func testDivisorsNonPrime(){
+        //-- 300  => 1 2  3  5  6  10  30  50   60  100  150  300
+        XCTAssertEqual(getDivsors(33),[1, 3, 11,33],"Not matching ")
+        XCTAssertEqual(getDivsors(300),[1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 25, 30, 50, 60, 75, 100, 150, 300],"Not matching ")
         XCTAssertEqual(getDivsors(42),[1, 2, 3, 6, 7, 14, 21, 42],"Not matching ")
         XCTAssertEqual(getDivsors(50),[1, 2, 5, 10, 25, 50],"Not matching ")
     }
@@ -168,7 +183,7 @@ class ListSquareTest: XCTestCase{
                 XCTAssertTrue(ans[i] == expected[i], "Actual and Expected don't have same value at index \(i) -> expected \(expected[i])")
             }
         }
-        else {XCTAssertEqual(ans.count, expected.count, "Actual and Expected don't have same length")}
+        else {XCTAssertEqual(ans.count, expected.count, "Actual and Expected don't have same length \(ans)--- \(expected)")}
     }
     
     func testExample() {
@@ -185,7 +200,7 @@ class ListSquareTest: XCTestCase{
 
 //--- TEST runs
 
-//DontGiveMeFiveTest.defaultTestSuite.run()
+DontGiveMeFiveTest.defaultTestSuite.run()
 GetDivisorTest.defaultTestSuite.run()
 CheckSquareRootTest.defaultTestSuite.run()
 ListSquareTest.defaultTestSuite.run()
