@@ -198,10 +198,70 @@ class ListSquareTest: XCTestCase{
 
 
 
-//--- TEST runs
 
+/** Problem 3
+ You will have a list of rationals in the form
+ 
+ lst = [ [numer_1, denom_1] , ... , [numer_n, denom_n] ]
+ or
+ 
+ lst = [ (numer_1, denom_1) , ... , (numer_n, denom_n) ]
+ where all numbers are positive integers. You have to produce their sum N / D in an irreducible form: this means that N and D have only 1 as a common divisor.
+ 
+ Example:
+ [ [1, 2], [1, 3], [1, 4] ]  -->  [13, 12]
+ 
+ 1/2  +  1/3  +  1/4     =      13/12
+ */
+func sumFracts(_ l: [(Int, Int)]) -> (Int, Int)? {
+    
+    //-- For each element in the array, add them up
+    
+    return (0,0)
+}
+
+func addTwofractions(_ fraction1 : (Int,Int), _ fraction2 : (Int,Int)) -> (Int,Int){
+    
+    // Formula = a/b + c/d => (a*d + c*b)/ (b*d)
+    let numerator = (fraction1.0 * fraction2.1) + (fraction1.1 * fraction2.0)
+    let denominator = fraction1.1 * fraction2.1
+    return (numerator,denominator)
+}
+
+
+class SumOfFractionsTest: XCTestCase{
+    
+    
+    func testExample() {
+        
+    }
+    
+}
+class AddTwoFractionsTest: XCTestCase{
+    
+    
+    func assertEqualFractions(_ ans: (Int, Int),_ expected: (Int,Int)) -> Bool{
+        if(ans.0 == expected.0 && ans.1 == expected.1){
+            return true
+        }
+    
+        return false
+    }
+    
+    func testNonFractions() {
+        XCTAssertTrue(assertEqualFractions(addTwofractions((1,2),(1,4)),(6,8)), "Not matching ")
+    }
+    
+}
+
+//--- TEST runs
+//-- Problem 1 tests
 DontGiveMeFiveTest.defaultTestSuite.run()
+
+//-- Problem 2 tests
 GetDivisorTest.defaultTestSuite.run()
 CheckSquareRootTest.defaultTestSuite.run()
 ListSquareTest.defaultTestSuite.run()
 
+//-- Problem 3 tests
+AddTwoFractionsTest.defaultTestSuite.run()
