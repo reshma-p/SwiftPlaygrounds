@@ -198,7 +198,6 @@ class ListSquareTest: XCTestCase{
 
 
 
-
 /** Problem 3
  You will have a list of rationals in the form
  
@@ -218,14 +217,7 @@ func sumFracts(_ l: [(Int, Int)]) -> (Int, Int)? {
     //-- For each element in the array, add them up
     let sum = l.reduce((0,0)) { x,y in
         convertToIrreducibleFraction(addTwofractions(x, y))
-//
     }
-    
-//    reduce(0) { x, y in
-//        x + (y*y)
-//    }
-//    var fractionSum = addTwofractions()
-//    var irreducibleFraction = convertToIrreducibleFraction(fractionSum)
     print("sum ofound \(sum)")
     return sum
 }
@@ -243,11 +235,12 @@ func convertToIrreducibleFraction(_ fraction1 : (Int,Int)) -> (Int,Int){
     var numerator = fraction1.0
     var denominator = fraction1.1
     
-    var upperBound = (numerator < denominator ? numerator : denominator)/2
+    var upperBound = (numerator < denominator ? denominator : numerator)/2
     print("upperBound : \(upperBound)")
     while upperBound-1 >= 1{
         print("upperBound in loop : \(upperBound)")
         if(numerator % upperBound == 0 && denominator % upperBound == 0 ){
+            print("Found denominatior \(upperBound)")
             //-- found the greatest common divisor
             numerator /= upperBound
             denominator /= upperBound
@@ -258,6 +251,17 @@ func convertToIrreducibleFraction(_ fraction1 : (Int,Int)) -> (Int,Int){
     print("numerator : \(numerator) -- denominator : \(denominator)")
     return (numerator,denominator)
 }
+
+
+class ConvertToIrreducibleFractionTest: XCTestCase{
+    func testing(_ l: (Int, Int), _ expected: (Int, Int)?) {
+        XCTAssert(convertToIrreducibleFraction(l) == expected!, "should return \(expected!)")
+    }
+    func testExample() {
+        testing((2,4),(1,2))
+    }
+}
+
 
 class SumOfFractionsTest: XCTestCase{
     
@@ -277,6 +281,8 @@ class SumOfFractionsTest: XCTestCase{
     }
     
 }
+
+
 class AddTwoFractionsTest: XCTestCase{
     
     
@@ -284,7 +290,7 @@ class AddTwoFractionsTest: XCTestCase{
         if(ans.0 == expected.0 && ans.1 == expected.1){
             return true
         }
-    
+        
         return false
     }
     
@@ -294,15 +300,98 @@ class AddTwoFractionsTest: XCTestCase{
     
 }
 
+
+
+/// Problem 4: You are given an array (which will have a length of at least 3, but could be very large) containing integers. The array is either entirely comprised of odd integers or entirely comprised of even integers except for a single integer N. Write a method that takes the array as an argument and returns this "outlier" N.
+
+/// Examples
+/// [2, 4, 0, 100, 4, 11, 2602, 36]
+/// Should return: 11 (the only odd number)
+
+/// [160, 3, 1719, 19, 11, 13, -21]
+/// Should return: 160 (the only even number)
+
+func findOutlier(_ array: [Int]) -> Int {
+    
+    var evenCount = 0
+    
+    //-- Checking just 3 first elements to make a decision if its odd or evens
+    for index in 0..<3{
+        if(array[index].isEven()){
+            evenCount += 1
+        }
+    }
+    
+    
+    if(evenCount >= 2){
+        let oddArray = array.filter { (val) -> Bool in
+            return !val.isEven()
+        }
+        return oddArray[0]
+    }else{
+        let evenArray = array.filter { (val) -> Bool in
+            return val.isEven()
+        }
+        return evenArray[0]
+    }
+    
+}
+
+extension Int {
+    func isEven() -> Bool{
+        if self % 2 == 0{
+            return true
+        }
+        
+        return false
+    }
+}
+
+class FindOutlierTest: XCTestCase{
+
+    
+    func testOddOutlierInSmallArray() {
+        XCTAssertEqual(findOutlier([2,3,4]),3, "Not matching")
+        XCTAssertEqual(findOutlier([1, 33, 10053359313, 2, 1, 1, 1, 1, 1, 1, -3, 9]), 2)
+        XCTAssertEqual(findOutlier([8, 80, 14, 2, 20, 0, 21, 80]), 21)
+    }
+    
+}
+
+
 //--- TEST runs
 //-- Problem 1 tests
-DontGiveMeFiveTest.defaultTestSuite.run()
-
-//-- Problem 2 tests
-GetDivisorTest.defaultTestSuite.run()
-CheckSquareRootTest.defaultTestSuite.run()
-ListSquareTest.defaultTestSuite.run()
-
-//-- Problem 3 tests
+//DontGiveMeFiveTest.defaultTestSuite.run()
+//
+////-- Problem 2 tests
+//GetDivisorTest.defaultTestSuite.run()
+//CheckSquareRootTest.defaultTestSuite.run()
+//ListSquareTest.defaultTestSuite.run()
+//
+////-- Problem 3 tests
 //AddTwoFractionsTest.defaultTestSuite.run()
-SumOfFractionsTest.defaultTestSuite.run()
+ConvertToIrreducibleFractionTest.defaultTestSuite.run()
+//SumOfFractionsTest.defaultTestSuite.run()
+
+
+//-- Problem 4 tests
+//FindOutlierTest.defaultTestSuite.run()
+
+
+//
+//func fibonacci(_ until: Int){
+////    if n <= 2 {
+////        return 1
+////    } else {
+////        return fibonacci(n - 1) + fibonacci(n - 2)
+////    }
+//    var fibonacciSeries: [Double] = [0,1]
+//
+//    for index in 2..<until{
+//        fibonacciSeries.append(fibonacciSeries[index-1] + fibonacciSeries[index-2])
+//    }
+//
+//    print(fibonacciSeries)
+//}
+//fibonacci(400)
+//print(fibonacci(10))
