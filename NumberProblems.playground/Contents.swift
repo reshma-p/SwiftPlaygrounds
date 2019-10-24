@@ -215,20 +215,29 @@ class ListSquareTest: XCTestCase{
 func sumFracts(_ l: [(Int, Int)]) -> (Int, Int)? {
     
     //-- For each element in the array, add them up
-    let sum = l.reduce((0,0)) { x,y in
-        convertToIrreducibleFraction(addTwofractions(x, y))
+//    let sum = l.reduce((1,1)) { x,y in
+//        addTwofractions(x, y)
+//    }
+    
+    var sum = (0,0)
+    for rational in l {
+        sum = addTwofractions(sum, rational)
     }
-    print("sum ofound \(sum)")
+    print("sum of ound \(sum)")
     return sum
 }
 
 func addTwofractions(_ fraction1 : (Int,Int), _ fraction2 : (Int,Int)) -> (Int,Int){
-    print("X => \(fraction1) Y => \(fraction2)")
     // Formula = a/b + c/d => (a*d + c*b)/ (b*d)
+    if(fraction2.1 == 0){
+        return fraction1
+    }else if(fraction1.1 == 0){
+        return fraction2
+    }
     let numerator = (fraction1.0 * fraction2.1) + (fraction1.1 * fraction2.0)
     let denominator = fraction1.1 * fraction2.1
     
-    return (numerator,denominator)
+    return convertToIrreducibleFraction((numerator,denominator))
 }
 
 func convertToIrreducibleFraction(_ fraction1 : (Int,Int)) -> (Int,Int){
@@ -236,11 +245,11 @@ func convertToIrreducibleFraction(_ fraction1 : (Int,Int)) -> (Int,Int){
     var denominator = fraction1.1
     
     var upperBound = (numerator < denominator ? denominator : numerator)/2
-    print("upperBound : \(upperBound)")
+    
     while upperBound-1 >= 1{
-        print("upperBound in loop : \(upperBound)")
+    
         if(numerator % upperBound == 0 && denominator % upperBound == 0 ){
-            print("Found denominatior \(upperBound)")
+    
             //-- found the greatest common divisor
             numerator /= upperBound
             denominator /= upperBound
@@ -248,11 +257,24 @@ func convertToIrreducibleFraction(_ fraction1 : (Int,Int)) -> (Int,Int){
         }
         upperBound -= 1
     }
-    print("numerator : \(numerator) -- denominator : \(denominator)")
+   
     return (numerator,denominator)
 }
 
-
+class AddTwoFractionsTest: XCTestCase{
+    func assertEqualFractions(_ ans: (Int, Int),_ expected: (Int,Int)) -> Bool{
+        if(ans.0 == expected.0 && ans.1 == expected.1){
+            return true
+        }
+        
+        return false
+    }
+    
+    func testNonFractions() {
+        XCTAssertTrue(assertEqualFractions(addTwofractions((1,2),(1,4)),(3,4)), "Not matching ")
+    }
+    
+}
 class ConvertToIrreducibleFractionTest: XCTestCase{
     func testing(_ l: (Int, Int), _ expected: (Int, Int)?) {
         XCTAssert(convertToIrreducibleFraction(l) == expected!, "should return \(expected!)")
@@ -283,22 +305,7 @@ class SumOfFractionsTest: XCTestCase{
 }
 
 
-class AddTwoFractionsTest: XCTestCase{
-    
-    
-    func assertEqualFractions(_ ans: (Int, Int),_ expected: (Int,Int)) -> Bool{
-        if(ans.0 == expected.0 && ans.1 == expected.1){
-            return true
-        }
-        
-        return false
-    }
-    
-    func testNonFractions() {
-        XCTAssertTrue(assertEqualFractions(addTwofractions((1,2),(1,4)),(3,4)), "Not matching ")
-    }
-    
-}
+
 
 
 
@@ -362,16 +369,16 @@ class FindOutlierTest: XCTestCase{
 //--- TEST runs
 //-- Problem 1 tests
 //DontGiveMeFiveTest.defaultTestSuite.run()
-//
-////-- Problem 2 tests
+////
+//////-- Problem 2 tests
 //GetDivisorTest.defaultTestSuite.run()
 //CheckSquareRootTest.defaultTestSuite.run()
 //ListSquareTest.defaultTestSuite.run()
 //
 ////-- Problem 3 tests
-//AddTwoFractionsTest.defaultTestSuite.run()
+AddTwoFractionsTest.defaultTestSuite.run()
 ConvertToIrreducibleFractionTest.defaultTestSuite.run()
-//SumOfFractionsTest.defaultTestSuite.run()
+SumOfFractionsTest.defaultTestSuite.run()
 
 
 //-- Problem 4 tests
