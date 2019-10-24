@@ -52,8 +52,11 @@ XCTestObservationCenter.shared.addTestObserver(testObserver)
 
     func getDartScore(dart: (x: Double, y: Double)) -> String {
         
-        if(hypotenuse(dart.x, dart.y) <= DartScoreCard.BullsEye.radius){
+        let distanceFromCenter = hypotenuse(dart.x, dart.y)
+        if(distanceFromCenter <= DartScoreCard.BullsEye.radius){
             return DartScoreCard.BullsEye.score
+        }else if((DartScoreCard.BullsEye.radius...DartScoreCard.Bull.radius).contains(distanceFromCenter)){
+            return DartScoreCard.Bull.score
         }
         return ""
     }
@@ -64,7 +67,6 @@ enum DartScoreCard:String {
     case BullsEye
     case Bull
     
-    
     var score: String{
         switch(self){
             case .BullsEye :
@@ -73,7 +75,6 @@ enum DartScoreCard:String {
                return "SB"
         }
     }
-    
     
     var diameter: Double{
         switch(self){
@@ -106,7 +107,6 @@ class DartboardTests: XCTestCase {
     }
     
     func testInsideBull() {
-        
         XCTAssertEqual(getDartScore(dart: (x:10, y: 10)),"SB","Didn't match the bull's score")
     }
 }
