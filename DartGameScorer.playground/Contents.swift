@@ -52,9 +52,42 @@ XCTestObservationCenter.shared.addTestObserver(testObserver)
 
     func getDartScore(dart: (x: Double, y: Double)) -> String {
         
+        if(hypotenuse(dart.x, dart.y) <= DartScoreCard.BullsEye.radius){
+            return DartScoreCard.BullsEye.score
+        }
         return ""
     }
 
+
+enum DartScoreCard:String {
+    
+    case BullsEye
+    case Bull
+    
+    
+    var score: String{
+        switch(self){
+            case .BullsEye :
+               return "DB"
+            case .Bull :
+               return "SB"
+        }
+    }
+    
+    
+    var diameter: Double{
+        switch(self){
+        case .BullsEye :
+            return 12.7
+        case .Bull :
+            return 31.8
+        }
+    }
+    
+    var radius: Double{
+        return diameter/2
+    }
+}
 func hypotenuse(_ a: Double, _ b: Double) -> Double{
     return (a * a + b * b).squareRoot()
 }
@@ -67,6 +100,14 @@ class DartboardTests: XCTestCase {
     func testInsideBullsEye() {
         
         XCTAssertEqual(getDartScore(dart: (x: -5, y: -3)),"DB","Didn't match the bull's eye score")
+        XCTAssertEqual(getDartScore(dart: (x: 5, y: 3)),"DB","Didn't match the bull's eye score")
+        XCTAssertEqual(getDartScore(dart: (x: 3, y: 5)),"DB","Didn't match the bull's eye score")
+        XCTAssertEqual(getDartScore(dart: (x: 4, y: 4)),"DB","Didn't match the bull's eye score")
+    }
+    
+    func testInsideBull() {
+        
+        XCTAssertEqual(getDartScore(dart: (x:10, y: 10)),"SB","Didn't match the bull's score")
     }
 }
 
