@@ -49,6 +49,7 @@ class WeightOrderingTest: XCTestCase{
     func testEmptyString(){
         let actual = orderWeight("")
         XCTAssertEqual(actual, "", "The empty string is not present")
+    }
 }
 
 WeightOrderingTest.defaultTestSuite.run()
