@@ -44,17 +44,18 @@ func orderWeight(_ s: String) -> String {
     var weighTArray = s.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: " ")
     
     weighTArray.sort { (a, b) in
-        return calculateWeight(String(a)) <= calculateWeight(String(b))
+        let weightA = calculateWeight(String(a))
+        let weightB = calculateWeight(String(b))
+        
+        return weightA == weightB ? a < b : weightA < weightB
     }
     return  weighTArray.joined(separator: " ")
 }
 
 func calculateWeight(_ numberString: String) -> Int{
-    
     guard let _ = Int(numberString) else {
         return -1
     }
-    
     return numberString.reduce(0) { (x, y) -> Int in
         return Int(x) + (Int(String(y)) ?? 0)
     }
@@ -81,6 +82,13 @@ class WeightOrderingTest: XCTestCase{
     func testOrderTheNumbersByWeights(){
        let actual1 = orderWeight(" 24 31 90")
        XCTAssertEqual(actual1, "31 24 90", "The empty string is not present")
+    }
+    
+    func testOrderByWeightsAndString(){
+        let actual1 = orderWeight(" 180 90 10")
+        let actual2 = orderWeight("56 65 74 100 99 68 86 180 90")
+        XCTAssertEqual(actual1, "10 180 90", "The empty string is not present")
+        XCTAssertEqual(actual2, "100 180 90 56 65 74 68 86 99", "The empty string is not present")
     }
 }
 
