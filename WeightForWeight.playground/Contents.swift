@@ -41,12 +41,12 @@ XCTestObservationCenter.shared.addTestObserver(testObserver)
 
 
 func orderWeight(_ s: String) -> String {
-    let weighTArray = s.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: " ")
+    var weighTArray = s.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: " ")
     
-    weighTArray.map { (value) -> T in
-        value.trimmingCharacters(in: .whitespacesAndNewlines)
+    weighTArray.sort { (a, b) in
+        return a < b
     }
-    return  s.trimmingCharacters(in: .whitespacesAndNewlines)
+    return  weighTArray.joined(separator: " ")
 }
 
 class WeightOrderingTest: XCTestCase{
@@ -56,16 +56,16 @@ class WeightOrderingTest: XCTestCase{
         XCTAssertEqual(actual, "", "The empty string is not present")
     }
     
-    func testTrimingSpacesinString(){
+    func testTrimingSpacesAtEndsOfString(){
         let actual1 = orderWeight(" 24 24 24")
         let actual2 = orderWeight(" 32 32 32 ")
         XCTAssertEqual(actual1, "24 24 24", "The empty string is not present")
         XCTAssertEqual(actual2, "32 32 32", "The empty string is not present")
     }
     
-    func testOrderWeightSingleSpaces(){
-        let actual1 = orderWeight(" 24 32 90")
-        XCTAssertEqual(actual1, "32 24 90", "The empty string is not present")
+    func testOrderTheNumbers(){
+        let actual1 = orderWeight(" 21 32 90")
+        XCTAssertEqual(actual1, "21 32 90", "The empty string is not present")
     }
 }
 
