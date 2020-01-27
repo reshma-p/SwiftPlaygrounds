@@ -39,8 +39,57 @@ let testObserver = TestObserver()
 XCTestObservationCenter.shared.addTestObserver(testObserver)
 
 
+
+func orderWeight(_ s: String) -> String {
+    var weighTArray = s.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: " ")
+    
+    weighTArray.sort { (a, b) in
+        let weightA = calculateWeight(String(a))
+        let weightB = calculateWeight(String(b))
+        
+        return weightA == weightB ? a < b : weightA < weightB
+    }
+    return  weighTArray.joined(separator: " ")
+}
+
+func calculateWeight(_ numberString: String) -> Int{
+    guard let _ = Int(numberString) else {
+        return -1
+    }
+    return numberString.reduce(0) { (x, y) -> Int in
+        return Int(x) + (Int(String(y)) ?? 0)
+    }
+}
 class WeightOrderingTest: XCTestCase{
 
+    func testEmptyString(){
+        let actual = orderWeight("")
+        XCTAssertEqual(actual, "", "The empty string is not present")
+    }
+    
+    func testTrimingSpacesAtEndsOfString(){
+        let actual1 = orderWeight(" 24 24 24")
+        let actual2 = orderWeight(" 32 32 32 ")
+        XCTAssertEqual(actual1, "24 24 24", "The empty string is not present")
+        XCTAssertEqual(actual2, "32 32 32", "The empty string is not present")
+    }
+    
+    func testOrderTheNumbers(){
+        let actual1 = orderWeight(" 21 32 90")
+        XCTAssertEqual(actual1, "21 32 90", "The empty string is not present")
+    }
+    
+    func testOrderTheNumbersByWeights(){
+       let actual1 = orderWeight(" 24 31 90")
+       XCTAssertEqual(actual1, "31 24 90", "The empty string is not present")
+    }
+    
+    func testOrderByWeightsAndString(){
+        let actual1 = orderWeight(" 180 90 10")
+        let actual2 = orderWeight("56 65 74 100 99 68 86 180 90")
+        XCTAssertEqual(actual1, "10 180 90", "The empty string is not present")
+        XCTAssertEqual(actual2, "100 180 90 56 65 74 68 86 99", "The empty string is not present")
+    }
 }
 
 WeightOrderingTest.defaultTestSuite.run()
