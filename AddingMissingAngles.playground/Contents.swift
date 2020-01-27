@@ -77,3 +77,55 @@ class BalanceAnglesTest: XCTestCase{
 
 
 BalanceAnglesTest.defaultTestSuite.run()
+
+func isOpeningBracket(_ value: String) -> Bool{
+    if (value == "(" || value == "[" || value == "{") {
+        return true
+    }
+    return false
+}
+
+func isMatchinTypeBracket(left: String, right: String) -> Bool {
+    if (left == "(" && right == ")") || (left == "{" && right == "}") || (left == "[" && right == "]") {
+        return true
+    }
+    
+    return false
+}
+func solutionBalancedParanthese(brackets: String) -> Bool {
+    
+    let bracketsArray = Array(brackets)
+    var bracketsStack: [String] = []
+    
+    for item in bracketsArray{
+        let itemString = String(item)
+        if isOpeningBracket(itemString) {
+            
+            bracketsStack.append(itemString)
+        } else {
+            let leftbracket = bracketsStack.last
+            if(isMatchinTypeBracket(left: leftbracket ?? "", right: itemString)){
+                let i = bracketsStack.popLast()
+            } else {
+                return false
+            }
+        }
+    }
+    return bracketsStack.count == 0
+}
+
+class BalancedBracketsTest: XCTestCase{
+    
+    func testBalancedBrackets(){
+        
+        XCTAssertFalse(solutionBalancedParanthese(brackets: "{{]"))
+        XCTAssertTrue(solutionBalancedParanthese(brackets: "{{}}"))
+        XCTAssertFalse(solutionBalancedParanthese(brackets: "{{}{[([]{})](){{}}}((({}){()[]}((){})))())}"))
+        
+        
+        
+    }
+}
+
+
+BalancedBracketsTest.defaultTestSuite.run()
