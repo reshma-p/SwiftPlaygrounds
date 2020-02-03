@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:PrimeNumbers.playground">
+   </FileRef>
+   <FileRef
+      location = "group:DartGameScorer.playground">
+   </FileRef>
+   <FileRef
+      location = "group:RomanNumerals.playground">
+   </FileRef>
+   <FileRef
+      location = "group:AddingMissingAngles.playground">
+   </FileRef>
+   <FileRef
+      location = "group:HowMuch.playground">
+   </FileRef>
+   <FileRef
+      location = "group:FoldingAnArray.playground">
+   </FileRef>
+   <FileRef
+      location = "group:DescendingOrder.playground">
+   </FileRef>
+   <FileRef
+      location = "group:FibonacciSeries.swift">
+   </FileRef>
+   <FileRef
+      location = "group:README.md">
+   </FileRef>
+   <FileRef
+      location = "group:SwiftPlaygrounds.xcworkspace">
+   </FileRef>
+   <FileRef
+      location = "group:WordSearch.playground">
+   </FileRef>
+   <FileRef
+      location = "group:WeightForWeight.playground">
+   </FileRef>
+   <FileRef
+      location = "group:NumberProblems.playground">
+   </FileRef>
+   <FileRef
+      location = "group:Jumps.playground">
+   </FileRef>
+</Workspace>
