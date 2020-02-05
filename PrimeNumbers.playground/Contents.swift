@@ -17,12 +17,7 @@ let testObserver = TestObserver()
 XCTestObservationCenter.shared.addTestObserver(testObserver)
 
 
-class PrimeTests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-    }
-  
-}
+
 
 /**
  Problem definition
@@ -56,4 +51,43 @@ class PrimeTests: XCTestCase {
  getPrimes(30, 0); // === [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
  */
 
+func isPrime(_ number: Int) -> Bool{
+    
+    var numOfDivisors = 1
+    
+    if(number > 1){
+        for value in 1...number/2{
+            if number % value == 0{
+                numOfDivisors += 1
+            }
+            if numOfDivisors > 2 {
+                break
+            }
+        }
+    }
+    
+    return numOfDivisors == 2 ? true : false
+}
+
+
+class PrimeTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+    }
+  
+    func testisPrimeNumbersLessThanEqualTo1(){
+        XCTAssertFalse(isPrime(0),"0 is not prime")
+        XCTAssertFalse(isPrime(1),"1 is not prime")
+    }
+    
+    func testisPrimeNumbersForlessThan10(){
+        XCTAssertTrue(isPrime(2),"2 is a prime")
+        XCTAssertFalse(isPrime(9),"9 is not a prime")
+   }
+    
+    func testisPrimeNumbersForHigerNumbers(){
+         XCTAssertFalse(isPrime(2232),"2232 is not a prime")
+         XCTAssertTrue(isPrime(2237),"2237 is a prime")
+    }
+}
 PrimeTests.defaultTestSuite.run()
