@@ -3,7 +3,7 @@ import XCTest
 
 
 
-//--- Test Observer
+//MARK: Test Observer
 
 class TestObserver: NSObject, XCTestObservation {
     func testCase(_ testCase: XCTestCase,
@@ -18,7 +18,7 @@ XCTestObservationCenter.shared.addTestObserver(testObserver)
 
 
 
-
+//MARK: Kata : Problem definition
 /**
  Problem definition
  =====================
@@ -51,24 +51,25 @@ XCTestObservationCenter.shared.addTestObserver(testObserver)
  getPrimes(30, 0); // === [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
  */
 
-func isPrime(_ number: Int) -> Bool{
+/// The isPrime is checking only for positive numbers
+extension Int {
     
-    var numOfDivisors = 1
-    
-    if(number > 1){
-        for value in 1...number/2{
-            if number % value == 0{
-                numOfDivisors += 1
-            }
-            if numOfDivisors > 2 {
-                break
+    func isPrime() -> Bool {
+        var numOfDivisors = 1
+        
+        if(self > 1){
+            for value in 1...self/2{
+                if self % value == 0{
+                    numOfDivisors += 1
+                }
+                if numOfDivisors > 2 {
+                    break
+                }
             }
         }
+        return numOfDivisors == 2 ? true : false
     }
-    
-    return numOfDivisors == 2 ? true : false
 }
-
 
 class PrimeTests: XCTestCase {
     override func setUp() {
@@ -76,18 +77,57 @@ class PrimeTests: XCTestCase {
     }
   
     func testisPrimeNumbersLessThanEqualTo1(){
-        XCTAssertFalse(isPrime(0),"0 is not prime")
-        XCTAssertFalse(isPrime(1),"1 is not prime")
+        XCTAssertFalse(0.isPrime(),"0 is not prime")
+        XCTAssertFalse(1.isPrime(),"1 is not prime")
     }
     
     func testisPrimeNumbersForlessThan10(){
-        XCTAssertTrue(isPrime(2),"2 is a prime")
-        XCTAssertFalse(isPrime(9),"9 is not a prime")
+        XCTAssertTrue(2.isPrime(),"2 is a prime")
+        XCTAssertFalse(9.isPrime(),"9 is not a prime")
    }
     
     func testisPrimeNumbersForHigerNumbers(){
-         XCTAssertFalse(isPrime(2232),"2232 is not a prime")
-         XCTAssertTrue(isPrime(2237),"2237 is a prime")
+        XCTAssertFalse(2232.isPrime(),"2232 is not a prime")
+        XCTAssertTrue(2237.isPrime(),"2237 is a prime")
     }
 }
+
+
+
+func getPrimes(_ start: Int, _ finish: Int) -> [Int] {
+    
+    let rangeArray = start <= finish ? (start...finish) : (finish...start)
+    
+    return rangeArray.filter { $0.isPrime() }
+}
+
+
+class GetPrimeTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+    }
+  
+    func testGetPrimeForZeroAndOne(){
+       XCTAssertEqual(getPrimes(0, 0),[],"No primes between 0 - 0")
+       XCTAssertEqual(getPrimes(1, 1),[],"No primes between 0 - 0")
+    }
+    
+    func testGetPrimeForAscendingRange(){
+       XCTAssertEqual(getPrimes(0, 10),[2,3,5,7],"Incorrect primes for range 0 - 10")
+    }
+    
+    func testGetPrimeForDescendingRange(){
+       XCTAssertEqual(getPrimes(10, 0),[2,3,5,7],"Incorrect primes for range 10 - 0")
+       XCTAssertEqual(getPrimes(30, 1),[2,3,5,7,11,13,17,19,23,29],"Incorrect primes for range 30 - 1")
+    }
+    
+    func testGetPrimeForNegativeRange(){
+       XCTAssertEqual(getPrimes(-10, 0),[],"Incorrect primes for range (-10) - 0")
+        XCTAssertEqual(getPrimes(-10, 30),[2,3,5,7,11,13,17,19,23,29],"Incorrect primes for range (-10) - 30")
+    }
+}
+
+
+// MARK: Test runs
 PrimeTests.defaultTestSuite.run()
+GetPrimeTests.defaultTestSuite.run()
